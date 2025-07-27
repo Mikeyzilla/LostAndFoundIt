@@ -1,0 +1,49 @@
+.StoreFinderPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.storeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  background-color: red;
+  margin-top: 20px;
+  width: 800px;
+  height: 500px;
+  text-align: center;
+  margin-right: -3%;
+}
+
+.storeMap-store-a, .storeMap-store-b, .storeMap-store-c, .storeMap-store-d, .storeMap-store-e, 
+.storeMap-store-f, .storeMap-store-g, .storeMap-store-h, .storeMap-store-i {
+  width: 160px;
+  height: 160px;
+  margin-left: 10%;
+  background-repeat: no-repeat;
+  background-size: contain; 
+}
+
+.storeMap-store-a, .storeMap-store-f {
+  background-image: url("../public/StoreA.png");
+}
+
+.storeMap-store-b, .storeMap-store-g {
+  background-image: url("../public/StoreB.png");
+}
+
+.storeMap-store-c, .storeMap-store-h {
+  background-image: url("../public/StoreC.png");
+}
+
+.storeMap-store-d, .storeMap-store-i {
+  background-image: url("../public/StoreD.png");
+}
+
+.storeMap-store-e {
+  background-image: url("../public/StoreE.png");
+}

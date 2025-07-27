@@ -1,0 +1,2 @@
+Render the results dynamically in app.tsx - store first, open up the store to display a store map or Red X if no matches, then
+open up the specific aisle / zoom in on it, and finally then display the list of (Aisle: Item / Item variant, amount left: )
