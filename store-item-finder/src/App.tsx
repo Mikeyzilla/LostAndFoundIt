@@ -33,14 +33,47 @@ function App() {
   }
 
   function renderReturnedResultsDynamically() {
-    return hardcodedStores.map(store => {
-      const storeResult = getStoreResults(store.storeName);
-
-      return (
-        <div key={store.storeName} className="store">
-        </div>
-      )})
-  }
+    if (groupResults == null) { return };
+    if (groupResults.length == 0) {return <div className='nothingThere'>No Matches Found</div>}
+       return groupResults.map(store => (
+        <div className={`Store ${store.sections.length > 0 ? 'aisleMap' : 'redX'}`}>{store.storeName}</div>
+       ))
+    }
+      /*//if the groupedResults.length > 0
+      if (groupResults == null) {
+        
+        //change the div to display No Match <abovediv>No Match Found<abovediv>
+        //and change set another div inside the div with a z index of 100 
+        //and a background image of a red X.
+        return;
+      } 
+      if (groupResults.length > 0) {
+        //if the store has data
+        groupResults.map(store => {
+          //for each store, 
+          //hide the store's background image 
+          //which will reveal a map of the internal store underneath
+          store.sections.map(section => {
+            section.aisles.map(aisle => {
+              
+          //then, for every section, for every aisle, for every item, 
+          //if the search found a match in that aisle, display a list that looks like the following
+          return <ol>
+            <li></li>
+          </ol>
+          //BrandName + variationname (or itemname) up at the top
+          //if item name is the one at the top, 
+          //There are X left! You can get Y - replace X with variation.amount and Y with a list of the variations
+          //Find them in section Y (section.sectionName) at aisle (aisle.aisleName)
+          //if variationname is up at the top
+          //the only thing that changes is you get rid of the you can get Y part
+            })
+          })
+        
+        })
+      }
+    }
+  }*/
 
   return (
     <main className="StoreFinderPage">
