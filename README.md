@@ -40,7 +40,7 @@ Data mapping and conditional rendering based on detailed match context
 
 🛠️ Current Focus
 
-Adding custom images per store that visually indicate match status
+Adding custom images per store that visually indicate match status - update the css class names to match the divs. 
 
 Don't just return the first match, instead return the first match but add in a view all matches button
 
