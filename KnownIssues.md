@@ -1,2 +1,3 @@
-Render the results dynamically in app.tsx - store first, open up the store to display a store map or Red X if no matches, then
-open up the specific aisle / zoom in on it, and finally then display the list of (Aisle: Item / Item variant, amount left: )
+A) Add in a view all matches function that allows each individual cell to be scrollable
+
+B) Add in images to each cell, a background to the main body, add in decorations

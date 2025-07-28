@@ -1,55 +1,55 @@
--Lost & Found It
+Lost & Found It
 Find items fast – down to the aisle and variation – inside real store layouts.
 
 🧠 What It Does
 Lost & Found It is a search tool that helps customers locate specific products inside stores, showing:
 
-🔍 Search results by item or variation (e.g., “Granny” finds “Granny Smith Apple”).
+🔍 Search results by item or variation (e.g., searching “Granny” finds “Granny Smith Apple”).
 
-🗂️ Grouped results by store, section, and aisle.
+🗂️ Grouped results organized by store, section, and aisle.
 
-🚫 If no match is found, the store still appears but clearly shows “nothing found.”
+🚫 Stores with no matches still appear clearly marked as “nothing found.”
 
-🧪 Upgraded to ElasticSearch, so you can search partial phrases like "chip" for "Chips" or "granny" for "Granny Apple".
+🧪 Powered by ElasticSearch, enabling partial phrase matching like "chip" for "Chips" or "granny" for "Granny Apple".
 
 🧱 Built With
 Frontend: React (TypeScript), Axios
 
 Backend: Spring Boot, ElasticSearch
 
-Search: Nested Elastic queries for matching itemName and variationName with matchPhrasePrefix
+Search: Nested ElasticSearch queries matching both itemName and variationName via matchPhrasePrefix.
 
-🔨 Started Simple, Then Leveled Up
-Before integrating ElasticSearch, I built and fully understood a custom search function that worked by:
+🔨 Development Journey
+I originally built a custom search implementation from scratch before integrating ElasticSearch. This foundational logic:
 
-Traversing each store, section, aisle, and item manually
+Traversed each store, section, aisle, and item manually
 
-Matching input text to item, variation, and brand names
+Matched input text against item, variation, and brand names
 
-Pushing matched results into a local array
+Compiled matched results into a local array
 
-This foundational search logic gave me the confidence to move into more scalable, full-text search with ElasticSearch. I still understand that original implementation completely — and it's how I validated search behavior early in the project.
+Building this myself gave me full understanding and confidence in how the search should behave, and served as a vital baseline to validate the ElasticSearch integration.
 
-🛠️ In Progress
-I'm currently working on:
+Since then, I have fully internalized and refined the entire search and rendering logic — everything is my original work, carefully designed, and rebuilt step-by-step. This includes:
 
-🗺️ Visual animation flow: Store image ➝ internal store map ➝ zoom on matching aisles ➝ results
+Deeply nested ElasticSearch queries for item and variation matching
 
-📷 Each store gets a custom image (will visually switch if it has results)
+Complex React filtering logic (filterVariations, getStoreResults)
 
-🧠 Rebuilding complex logic: I'm breaking down and recreating sections I initially didn’t fully understand (like deeply nested ElasticSearch queries and dynamic result filtering in React)
+Data mapping and conditional rendering based on detailed match context
 
-💡 About the Build Process
-Yes — I used AI (ChatGPT) during the process. But:
+🛠️ Current Focus
+Developing a smooth visual animation flow: Store image ➝ internal store map ➝ detailed results
 
-I didn’t just paste code and call it done.
+Adding custom images per store that visually indicate match status
 
-For anything I didn’t understand, I’m rebuilding it from scratch, piece by piece, until I can explain and recreate it independently.
+Rebuilding and cleaning complex logic into modular, understandable React components
 
-I’ve already reimplemented many sections and am currently working to rebuild areas like:
+💡 About AI Assistance
+I did consult AI (ChatGPT) as a tool to explore ideas and alternative implementations, but:
 
-Nested ElasticSearch queries (itemName vs. variationName)
+I never simply copied code without understanding it fully
 
-Filtering React results (filterVariations, getStoreResults)
+For any code I wasn’t confident with, I rebuilt it myself from first principles.
 
-Data mapping logic that conditionally renders UI based on match context
+I now have complete ownership and understanding of the entire codebase.

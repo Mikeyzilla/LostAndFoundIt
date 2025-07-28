@@ -6,6 +6,10 @@
   height: 100vh;
 }
 
+.searchBar {
+  text-align: center;
+}
+
 .storeGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -16,8 +20,73 @@
   width: 800px;
   height: 500px;
   text-align: center;
-  margin-right: -3%;
+  overflow: hidden;
 }
+
+.Store {
+  width: 100%;
+  height: 100%;
+  background: white;
+  box-sizing: border-box;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.Store > h2 {
+  flex: 0 0 auto;
+  font-size: 1.1rem;
+  margin: 0 0 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Store > div {
+  flex: 1 1 auto;
+  overflow: hidden; 
+  font-size: 0.8rem;
+  line-height: 1.1;
+  text-align: left;
+}
+
+
+.Store > div > div {
+  max-height: calc(100% - 20px);
+  overflow-y: auto; 
+}
+
+.Store strong {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Store p {
+  margin: 4px 0;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.redX {
+  display: flex;
+  align-items: center;      
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2rem;
+  color: red;
+  font-weight: bold;
+
+}
+
 
 .storeMap-store-a, .storeMap-store-b, .storeMap-store-c, .storeMap-store-d, .storeMap-store-e, 
 .storeMap-store-f, .storeMap-store-g, .storeMap-store-h, .storeMap-store-i {

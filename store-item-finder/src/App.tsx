@@ -1,87 +1,199 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState} from 'react';
 import './App.css';
 import type { StoreInformation } from './types';
+import axios from 'axios';
+
+type StoreStage = 'neutral' | 'loading' | 'list' | 'no-results';
 
 function App() {
-  const hardcodedStores = [
-    { storeName: 'Store A' },
-    { storeName: 'Store B' },
-    { storeName: 'Store C' },
-    { storeName: 'Store D' },
-    { storeName: 'Store E' },
-    { storeName: 'Store F' },
-    { storeName: 'Store G' },
-    { storeName: 'Store H' },
-    { storeName: 'Store I' }
-  ];
-
-  const [groupResults, setGroupResults] = useState<StoreInformation[] | null>(null);
+  const [groupResults, setGroupResults] = useState<StoreInformation[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [storeStages, setStoreStages] = useState<Record<string, StoreStage>>({});
 
-  async function beginSearch(event: React.ChangeEvent<HTMLInputElement>) {
-    const searchTerm = event.target.value.trim().toLowerCase();
-    setSearchTerm(searchTerm);
+  useEffect(() => {
+    fetchStores(searchTerm);
+  }, []);
 
+  async function fetchStores(term: string) {
     try {
-      const response = await axios.get('http://localhost:8080/findItem', { params: { term }});
-      setGroupResults(response.data.length ? response.data : []);
+      const response = await axios.get<StoreInformation[]>('http://localhost:8080/findItem', {
+        params: { term },
+      });
+      const data = response.data;
+      setGroupResults(data);
+      initialDisplay(data);
     } catch (error) {
-      console.error('Search error:', error);
-      setGroupResults([]);
+      console.error('Failed to fetch stores:', error);
     }
   }
 
-  function renderReturnedResultsDynamically() {
-    if (groupResults == null) { return };
-    if (groupResults.length == 0) {return <div className='nothingThere'>No Matches Found</div>}
-       return groupResults.map(store => (
-        <div className={`Store ${store.sections.length > 0 ? 'aisleMap' : 'redX'}`}>{store.storeName}</div>
-       ))
+  function initialDisplay(stores: StoreInformation[]) {
+    const neutralStages: Record<string, StoreStage> = {};
+    for (const store of stores) {
+      neutralStages[store.storeName] = 'neutral';
     }
-      /*//if the groupedResults.length > 0
-      if (groupResults == null) {
-        
-        //change the div to display No Match <abovediv>No Match Found<abovediv>
-        //and change set another div inside the div with a z index of 100 
-        //and a background image of a red X.
-        return;
-      } 
-      if (groupResults.length > 0) {
-        //if the store has data
-        groupResults.map(store => {
-          //for each store, 
-          //hide the store's background image 
-          //which will reveal a map of the internal store underneath
-          store.sections.map(section => {
-            section.aisles.map(aisle => {
-              
-          //then, for every section, for every aisle, for every item, 
-          //if the search found a match in that aisle, display a list that looks like the following
-          return <ol>
-            <li></li>
-          </ol>
-          //BrandName + variationname (or itemname) up at the top
-          //if item name is the one at the top, 
-          //There are X left! You can get Y - replace X with variation.amount and Y with a list of the variations
-          //Find them in section Y (section.sectionName) at aisle (aisle.aisleName)
-          //if variationname is up at the top
-          //the only thing that changes is you get rid of the you can get Y part
-            })
-          })
-        
-        })
+    setStoreStages(neutralStages);
+  }
+
+  function foundResults(store: StoreInformation): boolean {
+    return store.sections?.some((section) =>
+      section.aisles?.some((aisle) =>
+        aisle.items?.some((item) =>
+          item.itemName.toLowerCase().includes(searchTerm) ||
+          item.variations?.some((v) => v.variationName.toLowerCase().includes(searchTerm))
+        )
+      )
+    ) ?? false;
+  }
+
+  function showRedX(storeName: string) {
+    setStoreStages((prev) => ({ ...prev, [storeName]: 'no-results' }));
+  }
+
+  function setCertainStoresToAisleView(storeName: string) {
+    setStoreStages((prev) => ({ ...prev, [storeName]: 'loading' }));
+  }
+
+  function changeAisleToListView(storeName: string) {
+    setStoreStages((prev) => ({ ...prev, [storeName]: 'list' }));
+  }
+
+  function beginSearch(event: React.ChangeEvent<HTMLInputElement>) {
+    const term = event.target.value.trim().toLowerCase();
+    setSearchTerm(term);
+
+    if (!term) {
+      fetchStores('');
+      return;
+    }
+
+    for (const store of groupResults) {
+      if (foundResults(store)) {
+        setCertainStoresToAisleView(store.storeName);
+        setTimeout(() => changeAisleToListView(store.storeName), 1000);
+      } else {
+        showRedX(store.storeName);
       }
     }
-  }*/
+  }
+
+  function renderListView(store: StoreInformation) {
+    for (const section of store.sections) {
+      for (const aisle of section.aisles) {
+        for (const item of aisle.items) {
+          const itemNameMatch = item.itemName.toLowerCase().includes(searchTerm);
+          const matchingVariations = item.variations.filter(v =>
+            v.variationName.toLowerCase().includes(searchTerm)
+          );
+
+          if (itemNameMatch) {
+            const totalAmount = item.variations.reduce((sum, v) => sum + v.amount, 0);
+            const variationNames = item.variations.map(v => v.variationName);
+            return (
+              <div
+                key={`${item.itemName}-${aisle.aisleName}`}
+                style={{ marginTop: '-12%' }}
+              >
+                <h4 className="item-header" style={{ textAlign: 'center' }}>{item.itemName}</h4>
+                <p className="item-count">There are {totalAmount} left!</p>
+                <p className="item-variations">
+                  You can pick from: {variationNames.join(', ')}
+                </p>
+                <p className="item-location">
+                  Find them in the {section.sectionName} section on {aisle.aisleName}!
+                </p>
+              </div>
+            );
+          } else if (matchingVariations.length > 0) {
+            const variation = matchingVariations[0];
+            return (
+              <div
+                key={`${variation.variationName}-${aisle.aisleName}`}
+                style={{ marginTop: '-12%' }}
+              >
+                <h4 style={{ textAlign: 'center' }}>{variation.variationName}</h4>
+                <p style={{
+                  margin: '4px 0',
+                  fontSize: '0.75rem',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}>
+                  There are {variation.amount} left!
+                </p>
+                <p style={{
+                  margin: '4px 0',
+                  fontSize: '0.75rem',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}>
+                  Find them in the {section.sectionName} section on {aisle.aisleName}!
+                </p>
+              </div>
+            );
+          }
+        }
+      }
+    }
+
+    return <p>No matching items found.</p>;
+  }
+
+  function renderReturnedResultsDynamically() {
+    return groupResults.map((store) => {
+      const stage = storeStages[store.storeName] || 'neutral';
+
+      switch (stage) {
+        case 'neutral':
+          return <div key={store.storeName} className="Store neutral">{store.storeName}</div>;
+
+        case 'loading':
+          return (
+            <div key={store.storeName} className="Store aisleView">
+              <h3>{store.storeName}</h3>
+              {store.sections.map((section, idx) => (
+                <div key={idx}>
+                  <strong>{section.sectionName}</strong>
+                  {section.aisles.map((aisle, aIdx) => (
+                    <p key={aIdx}>{aisle.aisleName}</p>
+                  ))}
+                </div>
+              ))}
+            </div>
+          );
+
+        case 'list':
+          return (
+            <div key={store.storeName} className="Store listView">
+              <h3>{store.storeName}</h3>
+              {renderListView(store)}
+            </div>
+          );
+
+        case 'no-results':
+          return (
+            <div key={store.storeName} className="Store noResults">
+              {store.storeName}
+              <div className="redX">❌</div>
+            </div>
+          );
+
+        default:
+          return null;
+      }
+    });
+  }
 
   return (
     <main className="StoreFinderPage">
       <h1>Lost & Found It</h1>
       <input
         type="text"
-        onChange={beginSearch}
         value={searchTerm}
+        onChange={beginSearch}
+        className='searchBar'
+        placeholder="Search for an item..."
       />
       <div className="storeGrid">
         {renderReturnedResultsDynamically()}
