@@ -39,17 +39,9 @@ Complex React filtering logic (filterVariations, getStoreResults)
 Data mapping and conditional rendering based on detailed match context
 
 🛠️ Current Focus
-Developing a smooth visual animation flow: Store image ➝ internal store map ➝ detailed results
 
 Adding custom images per store that visually indicate match status
 
-Rebuilding and cleaning complex logic into modular, understandable React components
+Don't just return the first match, instead return the first match but add in a view all matches button
 
-💡 About AI Assistance
-I did consult AI (ChatGPT) as a tool to explore ideas and alternative implementations, but:
-
-I never simply copied code without understanding it fully
-
-For any code I wasn’t confident with, I rebuilt it myself from first principles.
-
-I now have complete ownership and understanding of the entire codebase.
+Add in styling and decorations to make it less barebones.

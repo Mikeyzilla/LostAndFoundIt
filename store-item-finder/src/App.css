@@ -36,15 +36,6 @@
   border-radius: 6px;
 }
 
-.Store > h2 {
-  flex: 0 0 auto;
-  font-size: 1.1rem;
-  margin: 0 0 6px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .Store > div {
   flex: 1 1 auto;
   overflow: hidden; 
@@ -53,17 +44,9 @@
   text-align: left;
 }
 
-
 .Store > div > div {
   max-height: calc(100% - 20px);
   overflow-y: auto; 
-}
-
-.Store strong {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .Store p {
@@ -73,7 +56,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 
 .redX {
   display: flex;
