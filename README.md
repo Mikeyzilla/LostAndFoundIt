@@ -36,7 +36,11 @@ Deeply nested ElasticSearch queries for item and variation matching
 
 Complex React filtering logic (filterVariations, getStoreResults)
 
-Data mapping and conditional rendering based on detailed match context
+Data mapping and conditional rendering based on detailed match context.
+
+With this app, you do need a way to bypass CORS. I was not able to come up with a definite solution to do this, but if you do bypass CORS or come up with a solution that fixes this issue, the application does work. 
+
+I did have help coming up with some of the syntax for this app using AI, but the idea is my own and when I did use AI, it was for help with the syntax - afterwards, I tested it to make sure it worked, rewrote the code to build muscle memory, and worked to fully understand what was going on.
 
 🛠️ Current Focus
 
